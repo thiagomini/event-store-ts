@@ -1,5 +1,9 @@
 import { JSONEventType, jsonEvent } from '@eventstore/db-client';
-import { type BookStatus, type RegisterBookProps } from '../book.entity';
+import {
+  type UpdateBookInfoProps,
+  type BookStatus,
+  type RegisterBookProps,
+} from '../book.entity';
 
 export type BookRegisteredEventProps = RegisterBookProps & {
   id: string;
@@ -12,6 +16,14 @@ export type BookRegisteredEvent = JSONEventType<
   BookRegisteredEventProps
 >;
 
+export type BookUpdatedProps = UpdateBookInfoProps & {
+  id: string;
+  occurredOn: Date;
+};
+
+export type BookUpdatedEvent = JSONEventType<'book-updated', BookUpdatedProps>;
+
+
 export const book = {
   bookRegistered(props: BookRegisteredEventProps): BookRegisteredEvent {
     return jsonEvent<BookRegisteredEvent>({
@@ -19,4 +31,12 @@ export const book = {
       data: props,
     });
   },
+
+  bookUpdated(props: BookUpdatedProps): BookUpdatedEvent {
+    return jsonEvent<BookUpdatedEvent>({
+      type: 'book-updated',
+      data: props,
+    });
+  },
 };
+

@@ -20,6 +20,8 @@ export type RegisterBookProps = {
   genre: BookGenre;
 };
 
+export type UpdateBookInfoProps = Partial<RegisterBookProps>;
+
 export class Book extends Entity {
   public readonly title: string;
   public readonly author: string;
@@ -32,7 +34,20 @@ export class Book extends Entity {
     switch (change.type) {
       case 'book-registered':
         this.assign(change.data);
+        break;
+      default:
+        this.assign(change.data);
+        break;
     }
+  }
+
+  public updateInfo(updateProps: UpdateBookInfoProps) {
+    const updatedBookEvent = Events.book.bookUpdated({
+      ...updateProps,
+      id: this.id,
+      occurredOn: new Date(),
+    });
+    this.apply(updatedBookEvent);
   }
 
   public static register(props: RegisterBookProps) {
