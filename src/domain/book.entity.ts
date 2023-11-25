@@ -52,7 +52,7 @@ export class Book extends Entity {
 
   public static register(props: RegisterBookProps) {
     const newId = randomUUID();
-    const newBook = new Book(newId);
+    const newBook = new Book();
     const registeredEvent = Events.book.bookRegistered({
       id: newId,
       occurredOn: new Date(),

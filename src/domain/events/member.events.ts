@@ -1,0 +1,23 @@
+import { JSONEventType, jsonEvent } from '@eventstore/db-client';
+import { type SignupMemberProps } from '../member.entity';
+import { type Membership } from '../membership.value-object';
+
+type MemberSignedUpEventProps = SignupMemberProps & {
+  id: string;
+  occurredOn: Date;
+  membership: Membership;
+};
+
+type MemberSignedUpEvent = JSONEventType<
+  'member-signed-up',
+  MemberSignedUpEventProps
+>;
+
+export const member = {
+  memberSignedUp(props: MemberSignedUpEventProps): MemberSignedUpEvent {
+    return jsonEvent<MemberSignedUpEvent>({
+      type: 'member-signed-up',
+      data: props,
+    });
+  },
+};
