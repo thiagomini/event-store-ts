@@ -25,16 +25,14 @@ export type MemberNameUpdatedEvent = JSONEventType<
 >;
 
 export const member = {
-  memberSignedUp(props: MemberSignedUpEventProps): MemberSignedUpEvent {
+  memberSignedUp(props: MemberSignedUpEventProps) {
     return jsonEvent<MemberSignedUpEvent>({
       type: 'member-signed-up',
       data: props,
     });
   },
 
-  memberNameUpdated(
-    props: MemberNameUpdatedEventProps,
-  ): MemberNameUpdatedEvent {
+  memberNameUpdated(props: MemberNameUpdatedEventProps) {
     return jsonEvent<MemberNameUpdatedEvent>({
       type: 'member-name-updated',
       data: props,

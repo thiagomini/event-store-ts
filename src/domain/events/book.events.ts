@@ -25,14 +25,14 @@ export type BookUpdatedEvent = JSONEventType<'book-updated', BookUpdatedProps>;
 
 
 export const book = {
-  bookRegistered(props: BookRegisteredEventProps): BookRegisteredEvent {
+  bookRegistered(props: BookRegisteredEventProps) {
     return jsonEvent<BookRegisteredEvent>({
       type: 'book-registered',
       data: props,
     });
   },
 
-  bookUpdated(props: BookUpdatedProps): BookUpdatedEvent {
+  bookUpdated(props: BookUpdatedProps) {
     return jsonEvent<BookUpdatedEvent>({
       type: 'book-updated',
       data: props,
