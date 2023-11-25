@@ -16,7 +16,25 @@ export class Member extends Entity {
   public readonly membership: Membership;
 
   public when(change: Change): void {
-    this.assign(change.data);
+    switch (change.type) {
+      case 'member-signed-up':
+        this.assign(change.data);
+        break;
+      case 'member-name-updated':
+        this.assign({
+          name: change.data.newName,
+        });
+    }
+  }
+
+  public updateName(newName: string) {
+    const nameUpdatedEvent = Events.member.memberNameUpdated({
+      newName,
+      id: this.id,
+      occurredOn: new Date(),
+    });
+
+    this.apply(nameUpdatedEvent);
   }
 
   public static signup(props: SignupMemberProps) {
