@@ -44,4 +44,19 @@ describe('Member Repository', () => {
     assert.deepEqual(memberLoaded.email, aMember.email);
     assert.deepEqual(memberLoaded.membership, aMember.membership);
   });
+
+  test('throws an error when the member does not exist', async () => {
+    // Arrange
+    const repository = new MemberRepository(eventStoreClient);
+    const nonexistingId = 'non-existing-id';
+
+    // Act
+    const promise = repository.memberById(nonexistingId);
+
+    // Assert
+    await assert.rejects(
+      promise,
+      new Error('member-non-existing-id not found'),
+    );
+  });
 });

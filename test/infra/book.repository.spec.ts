@@ -61,7 +61,7 @@ describe('Book Repository', () => {
     const promise = repository.bookById(nonexistingId);
 
     // Assert
-    assert.rejects(promise, new Error('book-non-existing-id not found'));
+    await assert.rejects(promise, new Error('book-non-existing-id not found'));
   });
 
   test('updates an existing book', async () => {
