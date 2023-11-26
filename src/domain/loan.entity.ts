@@ -57,6 +57,10 @@ export class Loan extends Entity {
     );
   }
 
+  public isExpiredAt(date: Date): boolean {
+    return date > this.dueDate;
+  }
+
   public static create(props: CreateLoanProps) {
     const loanCreatedEvent = Events.loan.loanCreated({
       ...props,

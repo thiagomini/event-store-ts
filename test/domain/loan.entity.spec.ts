@@ -77,4 +77,20 @@ describe('LoanEntity', () => {
       new Error('Loan cannot be closed before the start date'),
     );
   });
+
+  test('a loan expires', () => {
+    // Arrange
+    const aLoan = Loan.create({
+      bookId: '1',
+      memberId: '1',
+      startDate: new Date('2021-01-02'),
+      dueDate: new Date('2021-01-09'),
+    });
+
+    // Act
+    const result = aLoan.isExpiredAt(new Date('2021-01-10'));
+
+    // Assert
+    assert.equal(result, true);
+  });
 });
