@@ -41,4 +41,22 @@ describe('LoanEntity', () => {
     assert.equal(aLoan.changes.length, 2);
     assert.equal(aLoan.changes[1].type, 'loan-ended');
   });
+
+  
+  test('a loan cannot be ended twice', () => {
+    // Arrange
+    const aLoan = Loan.create({
+      bookId: '1',
+      memberId: '1',
+      startDate: new Date('2021-01-01'),
+      dueDate: new Date('2021-01-08'),
+    });
+    aLoan.end(new Date('2021-01-07'));
+
+    // Act
+    const invalidOperation = () => aLoan.end(new Date('2021-01-07'));
+
+    // Assert
+    assert.throws(invalidOperation, new Error('Loan already ended'));
+  });
 });

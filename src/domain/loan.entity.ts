@@ -40,6 +40,9 @@ export class Loan extends Entity {
   }
 
   public end(endDate: Date) {
+    if (this.endDate) {
+      throw new Error('Loan already ended');
+    }
     this.apply(
       Events.loan.loanEnded({
         id: this.id,
