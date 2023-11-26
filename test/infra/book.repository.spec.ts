@@ -26,4 +26,29 @@ describe('Book Repository', () => {
     // Assert
     assert.ok(response.success);
   });
+
+  test('finds an existing book', async () => {
+    // Arrange
+    const aBook = Book.register({
+      author: 'John Doe',
+      title: 'My Book',
+      genre: BookGenre.Fantasy,
+      isbn: '1234567890',
+      publishDate: new Date(),
+    });
+    const repository = new BookRepository(eventStoreClient);
+    await repository.save(aBook);
+
+    // Act
+    const bookLoaded = await repository.bookById(aBook.id);
+
+    // Assert
+    assert.deepEqual(bookLoaded.id, aBook.id);
+    assert.deepEqual(bookLoaded.author, aBook.author);
+    assert.deepEqual(bookLoaded.title, aBook.title);
+    assert.deepEqual(bookLoaded.genre, aBook.genre);
+    assert.deepEqual(bookLoaded.isbn, aBook.isbn);
+    assert.deepEqual(bookLoaded.publishDate, aBook.publishDate);
+    assert.deepEqual(bookLoaded.status, aBook.status);
+  });
 });

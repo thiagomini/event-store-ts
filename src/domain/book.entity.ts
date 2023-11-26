@@ -33,7 +33,15 @@ export class Book extends Entity {
   public when(change: Change): void {
     switch (change.type) {
       case 'book-registered':
-        this.assign(change.data);
+        this.assign({
+          id: change.data.id,
+          title: change.data.title,
+          author: change.data.author,
+          isbn: change.data.isbn,
+          publishDate: new Date(change.data.publishDate as string),
+          genre: change.data.genre,
+          status: change.data.status,
+        });
         break;
       default:
         this.assign(change.data);
@@ -45,7 +53,7 @@ export class Book extends Entity {
     const updatedBookEvent = Events.book.bookUpdated({
       ...updateProps,
       id: this.id,
-      occurredOn: new Date(),
+      occurredOn: new Date().toISOString(),
     });
     this.apply(updatedBookEvent);
   }
@@ -55,7 +63,7 @@ export class Book extends Entity {
     const newBook = new Book();
     const registeredEvent = Events.book.bookRegistered({
       id: newId,
-      occurredOn: new Date(),
+      occurredOn: new Date().toISOString(),
       ...props,
       status: BookStatus.Available,
     });

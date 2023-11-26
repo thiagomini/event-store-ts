@@ -7,7 +7,7 @@ import {
 
 export type BookRegisteredEventProps = RegisterBookProps & {
   id: string;
-  occurredOn: Date;
+  occurredOn: string;
   status: BookStatus;
 };
 
@@ -18,7 +18,7 @@ export type BookRegisteredEvent = JSONEventType<
 
 export type BookUpdatedProps = UpdateBookInfoProps & {
   id: string;
-  occurredOn: Date;
+  occurredOn: string;
 };
 
 export type BookUpdatedEvent = JSONEventType<'book-updated', BookUpdatedProps>;
