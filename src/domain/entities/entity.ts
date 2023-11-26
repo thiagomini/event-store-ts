@@ -14,4 +14,8 @@ export abstract class Entity {
   protected assign<T>(props: Partial<T>): void {
     Object.assign(this, props);
   }
+
+  public lastChange(): Change {
+    return this.changes[this.changes.length - 1];
+  }
 }

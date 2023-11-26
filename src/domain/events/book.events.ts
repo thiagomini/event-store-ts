@@ -23,6 +23,16 @@ export type BookUpdatedProps = UpdateBookInfoProps & {
 
 export type BookUpdatedEvent = JSONEventType<'book-updated', BookUpdatedProps>;
 
+export type BookBorrowedEventProps = {
+  id: string;
+  occurredOn: string;
+  newStatus: BookStatus;
+};
+
+export type BookBorrowedEvent = JSONEventType<
+  'book-borrowed',
+  BookBorrowedEventProps
+>;
 
 export const book = {
   bookRegistered(props: BookRegisteredEventProps) {
@@ -35,6 +45,13 @@ export const book = {
   bookUpdated(props: BookUpdatedProps) {
     return jsonEvent<BookUpdatedEvent>({
       type: 'book-updated',
+      data: props,
+    });
+  },
+
+  bookBorrowed(props: BookBorrowedEventProps) {
+    return jsonEvent<BookBorrowedEvent>({
+      type: 'book-borrowed',
       data: props,
     });
   },

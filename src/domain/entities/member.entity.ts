@@ -56,9 +56,9 @@ export class Member extends Entity {
     this.apply(nameUpdatedEvent);
   }
 
-  public borrow(book: Book, loanDate: Date, dueDate: Date) {
+  public borrow(bookId: string, loanDate: Date, dueDate: Date) {
     return Loan.create({
-      bookId: book.id,
+      bookId: bookId,
       dueDate,
       memberId: this.id,
       startDate: loanDate,
