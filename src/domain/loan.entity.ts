@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { Entity } from './entity';
 import { Change } from './interfaces/change.interface';
 import { Events } from './events/events';
-import { LoanEndedEvent, type LoanCreatedEvent } from './events/loan.events';
+import { LoanClosedEvent, type LoanCreatedEvent } from './events/loan.events';
 
 export type CreateLoanProps = {
   memberId: string;
@@ -30,8 +30,8 @@ export class Loan extends Entity {
           dueDate: new Date(loanCreatedEvent.data.dueDate),
         });
         break;
-      case 'loan-ended':
-        const loanEndedEvent = change as unknown as LoanEndedEvent;
+      case 'loan-closed':
+        const loanEndedEvent = change as unknown as LoanClosedEvent;
         this.assign({
           endDate: new Date(loanEndedEvent.data.endDate),
         });
@@ -39,12 +39,17 @@ export class Loan extends Entity {
     }
   }
 
-  public end(endDate: Date) {
+  public close(endDate: Date) {
     if (this.endDate) {
-      throw new Error('Loan already ended');
+      throw new Error('Loan already closed');
     }
+
+    if (endDate < this.startDate) {
+      throw new Error('Loan cannot be closed before the start date');
+    }
+
     this.apply(
-      Events.loan.loanEnded({
+      Events.loan.loanClosed({
         id: this.id,
         endDate: endDate.toISOString(),
         occurredOn: new Date().toISOString(),

@@ -11,13 +11,16 @@ export type LoanCreatedEvent = JSONEventType<
   LoanCreatedEventProps
 >;
 
-export type LoanEndedEventProps = {
+export type LoanClosedEventProps = {
   id: string;
   endDate: string;
   occurredOn: string;
 };
 
-export type LoanEndedEvent = JSONEventType<'loan-ended', LoanEndedEventProps>;
+export type LoanClosedEvent = JSONEventType<
+  'loan-closed',
+  LoanClosedEventProps
+>;
 
 export const loan = {
   loanCreated(props: LoanCreatedEventProps) {
@@ -26,9 +29,9 @@ export const loan = {
       data: props,
     });
   },
-  loanEnded(props: LoanEndedEventProps) {
-    return jsonEvent<LoanEndedEvent>({
-      type: 'loan-ended',
+  loanClosed(props: LoanClosedEventProps) {
+    return jsonEvent<LoanClosedEvent>({
+      type: 'loan-closed',
       data: props,
     });
   },
