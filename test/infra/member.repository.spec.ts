@@ -59,4 +59,24 @@ describe('Member Repository', () => {
       new Error('member-non-existing-id not found'),
     );
   });
+
+  test('updates an existing member', async () => {
+    // Arrange
+    const aMember = Member.signup({
+      name: 'John',
+      email: new Email('john@doe.com'),
+    });
+    const repository = new MemberRepository(eventStoreClient);
+    await repository.save(aMember);
+    const memberLoaded = await repository.memberById(aMember.id);
+    memberLoaded.updateName('Jane Doe');
+
+    // Act
+    await repository.save(memberLoaded);
+
+    // Assert
+    const bookLoadedAfterUpdate = await repository.memberById(memberLoaded.id);
+    assert.deepEqual(bookLoadedAfterUpdate.id, aMember.id);
+    assert.deepEqual(bookLoadedAfterUpdate.name, 'Jane Doe');
+  });
 });
