@@ -3,7 +3,6 @@ import { Book, BookGenre } from '../../src/domain/book.entity';
 import { BookRepository } from '../../src/infra/book.repository';
 import { eventStoreClient } from '../../src/infra/event-store.client';
 import assert from 'node:assert/strict';
-import { randomUUID } from 'node:crypto';
 
 describe('Book Repository', () => {
   after(async () => {
