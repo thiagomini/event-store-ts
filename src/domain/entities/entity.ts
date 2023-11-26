@@ -1,4 +1,4 @@
-import { Change } from './interfaces/change.interface';
+import { Change } from '../interfaces/change.interface';
 
 export abstract class Entity {
   public readonly changes: ReadonlyArray<Change> = [];

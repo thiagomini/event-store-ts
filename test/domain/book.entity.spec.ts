@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test, { describe } from 'node:test';
-import { Book, BookGenre, BookStatus } from '../../src/domain/book.entity';
+import {
+  Book,
+  BookGenre,
+  BookStatus,
+} from '../../src/domain/entities/book.entity';
 
 describe('BookEntity', () => {
   test('a new book is registered', () => {

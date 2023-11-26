@@ -1,5 +1,5 @@
 import test, { after, describe } from 'node:test';
-import { Book, BookGenre } from '../../src/domain/book.entity';
+import { Book, BookGenre } from '../../src/domain/entities/book.entity';
 import { BookRepository } from '../../src/infra/book.repository';
 import { eventStoreClient } from '../../src/infra/event-store.client';
 import assert from 'node:assert/strict';

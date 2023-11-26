@@ -1,13 +1,16 @@
 import { randomUUID } from 'crypto';
 import { Entity } from './entity';
-import { Change } from './interfaces/change.interface';
-import { Email } from './email.value-object';
-import { Membership, MembershipStatus } from './membership.value-object';
-import { Events } from './events/events';
+import { Change } from '../interfaces/change.interface';
+import { Email } from '../value-objects/email.value-object';
+import {
+  Membership,
+  MembershipStatus,
+} from '../value-objects/membership.value-object';
+import { Events } from '../events/events';
 import {
   MemberNameUpdatedEvent,
   type MemberSignedUpEvent,
-} from './events/member.events';
+} from '../events/member.events';
 
 export type SignupMemberProps = {
   name: string;

@@ -1,5 +1,5 @@
 import { FORWARDS, START } from '@eventstore/db-client';
-import { Book } from '../domain/book.entity';
+import { Book } from '../domain/entities/book.entity';
 import { Change } from '../domain/interfaces/change.interface';
 import { Repository } from './entity.repository';
 

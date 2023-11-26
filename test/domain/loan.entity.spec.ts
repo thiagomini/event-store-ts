@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test, { describe } from 'node:test';
-import { Loan } from '../../src/domain/loan.entity';
+import { Loan } from '../../src/domain/entities/loan.entity';
 
 describe('LoanEntity', () => {
   test('a new loan is created', () => {

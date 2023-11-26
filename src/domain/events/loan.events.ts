@@ -1,5 +1,5 @@
 import { jsonEvent, type JSONEventType } from '@eventstore/db-client';
-import { CreateLoanProps } from '../loan.entity';
+import { CreateLoanProps } from '../entities/loan.entity';
 
 export type LoanCreatedEventProps = CreateLoanProps & {
   id: string;

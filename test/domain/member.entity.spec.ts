@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import test, { describe } from 'node:test';
-import { Member } from '../../src/domain/member.entity';
-import { Email } from '../../src/domain/email.value-object';
-import { MembershipStatus } from '../../src/domain/membership.value-object';
+import { Member } from '../../src/domain/entities/member.entity';
+import { Email } from '../../src/domain/value-objects/email.value-object';
+import { MembershipStatus } from '../../src/domain/value-objects/membership.value-object';
 
 describe('Member Entity', () => {
   test('A new member is signed up', () => {

@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
 import { Entity } from './entity';
-import { Change } from './interfaces/change.interface';
-import { Events } from './events/events';
-import { LoanClosedEvent, type LoanCreatedEvent } from './events/loan.events';
+import { Change } from '../interfaces/change.interface';
+import { Events } from '../events/events';
+import { LoanClosedEvent, type LoanCreatedEvent } from '../events/loan.events';
 
 export type CreateLoanProps = {
   memberId: string;

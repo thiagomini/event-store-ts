@@ -3,7 +3,7 @@ import {
   type UpdateBookInfoProps,
   type BookStatus,
   type RegisterBookProps,
-} from '../book.entity';
+} from '../entities/book.entity';
 
 export type BookRegisteredEventProps = RegisterBookProps & {
   id: string;

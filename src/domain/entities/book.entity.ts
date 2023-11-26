@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
 import { Entity } from './entity';
-import { Change } from './interfaces/change.interface';
-import { Events } from './events/events';
-import { BookRegisteredEvent } from './events/book.events';
+import { Change } from '../interfaces/change.interface';
+import { Events } from '../events/events';
+import { BookRegisteredEvent } from '../events/book.events';
 
 export enum BookStatus {
   Available = 'Available',

@@ -1,6 +1,6 @@
 import { JSONEventType, jsonEvent } from '@eventstore/db-client';
-import { type SignupMemberProps } from '../member.entity';
-import { type Membership } from '../membership.value-object';
+import { type SignupMemberProps } from '../entities/member.entity';
+import { type Membership } from '../value-objects/membership.value-object';
 
 type MemberSignedUpEventProps = SignupMemberProps & {
   id: string;

@@ -1,6 +1,6 @@
 import { FORWARDS, START } from '@eventstore/db-client';
 import { Change } from '../domain/interfaces/change.interface';
-import { Member } from '../domain/member.entity';
+import { Member } from '../domain/entities/member.entity';
 import { Repository } from './entity.repository';
 
 export class MemberRepository extends Repository<Member, 'member'> {

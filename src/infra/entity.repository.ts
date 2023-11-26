@@ -1,5 +1,5 @@
 import { AppendResult, EventStoreDBClient } from '@eventstore/db-client';
-import { Entity } from '../domain/entity';
+import { Entity } from '../domain/entities/entity';
 import { Change } from '../domain/interfaces/change.interface';
 
 export abstract class Repository<T extends Entity, Name extends string> {
