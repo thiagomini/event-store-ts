@@ -1,4 +1,3 @@
-import { JSONEventType } from '@eventstore/db-client';
 import { Change } from './interfaces/change.interface';
 
 export abstract class Entity {

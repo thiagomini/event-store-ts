@@ -8,7 +8,7 @@ type MemberSignedUpEventProps = SignupMemberProps & {
   membership: Membership;
 };
 
-type MemberSignedUpEvent = JSONEventType<
+export type MemberSignedUpEvent = JSONEventType<
   'member-signed-up',
   MemberSignedUpEventProps
 >;
@@ -23,6 +23,8 @@ export type MemberNameUpdatedEvent = JSONEventType<
   'member-name-updated',
   MemberNameUpdatedEventProps
 >;
+
+export type MemberEvent = MemberSignedUpEvent | MemberNameUpdatedEvent;
 
 export const member = {
   memberSignedUp(props: MemberSignedUpEventProps) {

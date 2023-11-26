@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { Entity } from './entity';
 import { Change } from './interfaces/change.interface';
 import { Events } from './events/events';
+import { BookRegisteredEvent } from './events/book.events';
 
 export enum BookStatus {
   Available = 'Available',
@@ -33,14 +34,15 @@ export class Book extends Entity {
   public when(change: Change): void {
     switch (change.type) {
       case 'book-registered':
+        const bookRegistered = change as unknown as BookRegisteredEvent;
         this.assign({
-          id: change.data.id,
-          title: change.data.title,
-          author: change.data.author,
-          isbn: change.data.isbn,
-          publishDate: new Date(change.data.publishDate as string),
-          genre: change.data.genre,
-          status: change.data.status,
+          id: bookRegistered.data.id,
+          title: bookRegistered.data.title,
+          author: bookRegistered.data.author,
+          isbn: bookRegistered.data.isbn,
+          publishDate: new Date(bookRegistered.data.publishDate),
+          genre: bookRegistered.data.genre,
+          status: bookRegistered.data.status,
         });
         break;
       default:

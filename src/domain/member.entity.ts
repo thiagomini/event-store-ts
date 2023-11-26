@@ -4,6 +4,10 @@ import { Change } from './interfaces/change.interface';
 import { Email } from './email.value-object';
 import { Membership, MembershipStatus } from './membership.value-object';
 import { Events } from './events/events';
+import {
+  MemberNameUpdatedEvent,
+  type MemberSignedUpEvent,
+} from './events/member.events';
 
 export type SignupMemberProps = {
   name: string;
@@ -18,20 +22,21 @@ export class Member extends Entity {
   public when(change: Change): void {
     switch (change.type) {
       case 'member-signed-up':
+        const memberSignedUp = change as unknown as MemberSignedUpEvent;
         this.assign({
-          name: change.data.name,
-          email: new Email((change.data.email as Email).value),
+          name: memberSignedUp.data.name,
+          email: new Email(memberSignedUp.data.email.value),
           membership: new Membership({
-            startDate: new Date(
-              (change.data.membership as Membership).startDate,
-            ),
-            status: (change.data.membership as Membership).status,
+            startDate: new Date(memberSignedUp.data.membership.startDate),
+            status: memberSignedUp.data.membership.status,
           }),
         });
         break;
       case 'member-name-updated':
+        const memberNameUpdatedEvent =
+          change as unknown as MemberNameUpdatedEvent;
         this.assign({
-          name: change.data.newName,
+          name: memberNameUpdatedEvent.data.newName,
         });
     }
   }
