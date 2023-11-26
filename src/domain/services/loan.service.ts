@@ -30,6 +30,9 @@ export class LoanService {
   }
 
   public returnBook({ loan, book, endDate }: ReturnBookCommand) {
+    if (book.isAvailable()) {
+      throw new Error('Book is already available');
+    }
     loan.close(endDate);
     book.return();
   }

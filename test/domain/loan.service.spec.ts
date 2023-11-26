@@ -10,6 +10,7 @@ import { LoanService } from '../../src/domain/services/loan.service';
 import assert from 'node:assert/strict';
 import { MemberFactory } from '../factories/member.factory';
 import { BookFactory } from '../factories/book.factory';
+import { Loan } from '../../src/domain/entities/loan.entity';
 
 describe('Loan Service', () => {
   const memberFactory = new MemberFactory();
@@ -103,6 +104,30 @@ describe('Loan Service', () => {
     assert.equal(aBook.status, BookStatus.Available);
     assert.equal(aBook.changes.length, 3);
     assert.equal(aBook.lastChange().type, 'book-returned');
+  });
+
+  test('Cannot return a book that is available', () => {
+    // Arrange
+    const aMember = memberFactory.build();
+    const aBook = bookFactory.build();
+    const loanService = new LoanService();
+    const loan = Loan.create({
+      bookId: aBook.id,
+      dueDate: addDays(new Date(), 7),
+      memberId: aMember.id,
+      startDate: new Date(),
+    });
+    // Act
+    const endDate = new Date();
+    const invalidOperation = () =>
+      loanService.returnBook({
+        loan,
+        book: aBook,
+        endDate,
+      });
+
+    // Assert
+    assert.throws(invalidOperation, new Error('Book is already available'));
   });
 });
 
