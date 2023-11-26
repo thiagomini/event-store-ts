@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { Entity } from './entity';
 import { Change } from './interfaces/change.interface';
 import { Events } from './events/events';
-import { type LoanCreatedEvent } from './events/loan.events';
+import { LoanEndedEvent, type LoanCreatedEvent } from './events/loan.events';
 
 export type CreateLoanProps = {
   memberId: string;
@@ -30,7 +30,23 @@ export class Loan extends Entity {
           dueDate: new Date(loanCreatedEvent.data.dueDate),
         });
         break;
+      case 'loan-ended':
+        const loanEndedEvent = change as unknown as LoanEndedEvent;
+        this.assign({
+          endDate: new Date(loanEndedEvent.data.endDate),
+        });
+        break;
     }
+  }
+
+  public end(endDate: Date) {
+    this.apply(
+      Events.loan.loanEnded({
+        id: this.id,
+        endDate: endDate.toISOString(),
+        occurredOn: new Date().toISOString(),
+      }),
+    );
   }
 
   public static create(props: CreateLoanProps) {
