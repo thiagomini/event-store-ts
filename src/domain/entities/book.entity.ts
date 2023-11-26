@@ -95,6 +95,10 @@ export class Book extends Entity {
     this.apply(returnedEvent);
   }
 
+  public isAvailable(): this is { status: BookStatus.Available } {
+    return this.status === BookStatus.Available;
+  }
+
   public static register(props: RegisterBookProps) {
     const newId = randomUUID();
     const newBook = new Book();

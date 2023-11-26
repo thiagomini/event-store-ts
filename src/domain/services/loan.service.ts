@@ -21,6 +21,9 @@ export class LoanService {
     member,
     startDate,
   }: LoanBookToMemberCommand) {
+    if (!book.isAvailable()) {
+      throw new Error('The book is not available');
+    }
     const loan = member.borrow(book.id, startDate, dueDate);
     book.borrow();
     return loan;

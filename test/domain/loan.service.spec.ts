@@ -52,6 +52,29 @@ describe('Loan Service', () => {
     assert.equal(aBook.lastChange().type, 'book-borrowed');
   });
 
+  test('Cannot lend an unavailable book', () => {
+    // Arrange
+    const aMember = memberFactory.build();
+    const aBook = bookFactory.build({
+      status: BookStatus.Borrowed,
+    });
+    const loanService = new LoanService();
+
+    // Act
+    const startDate = new Date();
+    const dueDate = addDays(startDate, 7);
+    const invalidOperation = () =>
+      loanService.lendBookToMember({
+        book: aBook,
+        dueDate,
+        startDate,
+        member: aMember,
+      });
+
+    // Assert
+    assert.throws(invalidOperation, new Error('The book is not available'));
+  });
+
   test('Returns a book from a member', () => {
     // Arrange
     const aMember = memberFactory.build();
