@@ -18,7 +18,16 @@ export class Member extends Entity {
   public when(change: Change): void {
     switch (change.type) {
       case 'member-signed-up':
-        this.assign(change.data);
+        this.assign({
+          name: change.data.name,
+          email: new Email((change.data.email as Email).value),
+          membership: new Membership({
+            startDate: new Date(
+              (change.data.membership as Membership).startDate,
+            ),
+            status: (change.data.membership as Membership).status,
+          }),
+        });
         break;
       case 'member-name-updated':
         this.assign({
@@ -31,7 +40,7 @@ export class Member extends Entity {
     const nameUpdatedEvent = Events.member.memberNameUpdated({
       newName,
       id: this.id,
-      occurredOn: new Date(),
+      occurredOn: new Date().toISOString(),
     });
 
     this.apply(nameUpdatedEvent);
@@ -47,7 +56,7 @@ export class Member extends Entity {
       ...props,
       id: randomUUID(),
       membership,
-      occurredOn: new Date(),
+      occurredOn: new Date().toISOString(),
     });
 
     newMember.apply(signupEvent);

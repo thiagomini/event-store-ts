@@ -25,4 +25,23 @@ describe('Member Repository', () => {
     // Assert
     assert.ok(response.success);
   });
+
+  test('finds an existing member', async () => {
+    // Arrange
+    const aMember = Member.signup({
+      name: 'John',
+      email: new Email('john@doe.com'),
+    });
+    const repository = new MemberRepository(eventStoreClient);
+    await repository.save(aMember);
+
+    // Act
+    const memberLoaded = await repository.memberById(aMember.id);
+
+    // Assert
+    assert.deepEqual(memberLoaded.id, aMember.id);
+    assert.deepEqual(memberLoaded.name, aMember.name);
+    assert.deepEqual(memberLoaded.email, aMember.email);
+    assert.deepEqual(memberLoaded.membership, aMember.membership);
+  });
 });

@@ -4,7 +4,7 @@ import { type Membership } from '../membership.value-object';
 
 type MemberSignedUpEventProps = SignupMemberProps & {
   id: string;
-  occurredOn: Date;
+  occurredOn: string;
   membership: Membership;
 };
 
@@ -15,7 +15,7 @@ type MemberSignedUpEvent = JSONEventType<
 
 export type MemberNameUpdatedEventProps = {
   id: string;
-  occurredOn: Date;
+  occurredOn: string;
   newName: string;
 };
 
