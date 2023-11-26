@@ -1,25 +1,12 @@
-import {
-  AppendResult,
-  EventStoreDBClient,
-  FORWARDS,
-  START,
-} from '@eventstore/db-client';
+import { FORWARDS, START } from '@eventstore/db-client';
 import { Book } from '../domain/book.entity';
 import { Change } from '../domain/interfaces/change.interface';
+import { Repository } from './entity.repository';
 
-export class BookRepository {
-  private readonly streamBaseName = 'book';
-  constructor(private readonly eventStoreDbClient: EventStoreDBClient) {}
+export class BookRepository extends Repository<Book, 'book'> {
+  protected readonly streamBaseName = 'book';
 
-  public async save(book: Book): Promise<AppendResult> {
-    const streamName = this.streamNameFor(book);
-    return await this.eventStoreDbClient.appendToStream(
-      streamName,
-      book.changes as Change[],
-    );
-  }
-
-  public async bookById(id: string) {
+  public async entityById(id: string) {
     const bookStreamName = this.streamNameFor(id);
     const events = this.eventStoreDbClient.readStream<Change>(bookStreamName, {
       fromRevision: START,
@@ -31,10 +18,5 @@ export class BookRepository {
     }
 
     return book;
-  }
-
-  private streamNameFor(bookOrId: Book | string): string {
-    const id = bookOrId instanceof Book ? bookOrId.id : bookOrId;
-    return `${this.streamBaseName}-${id}`;
   }
 }

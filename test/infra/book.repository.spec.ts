@@ -40,7 +40,7 @@ describe('Book Repository', () => {
     await repository.save(aBook);
 
     // Act
-    const bookLoaded = await repository.bookById(aBook.id);
+    const bookLoaded = await repository.entityById(aBook.id);
 
     // Assert
     assert.deepEqual(bookLoaded.id, aBook.id);
@@ -58,7 +58,7 @@ describe('Book Repository', () => {
     const nonexistingId = 'non-existing-id';
 
     // Act
-    const promise = repository.bookById(nonexistingId);
+    const promise = repository.entityById(nonexistingId);
 
     // Assert
     await assert.rejects(promise, new Error('book-non-existing-id not found'));
@@ -75,7 +75,7 @@ describe('Book Repository', () => {
     });
     const repository = new BookRepository(eventStoreClient);
     await repository.save(aBook);
-    const bookLoaded = await repository.bookById(aBook.id);
+    const bookLoaded = await repository.entityById(aBook.id);
     bookLoaded.updateInfo({
       author: 'Jane Doe',
     });
@@ -84,7 +84,7 @@ describe('Book Repository', () => {
     await repository.save(bookLoaded);
 
     // Assert
-    const bookLoadedAfterUpdate = await repository.bookById(bookLoaded.id);
+    const bookLoadedAfterUpdate = await repository.entityById(bookLoaded.id);
     assert.deepEqual(bookLoadedAfterUpdate.id, aBook.id);
     assert.deepEqual(bookLoadedAfterUpdate.author, 'Jane Doe');
   });

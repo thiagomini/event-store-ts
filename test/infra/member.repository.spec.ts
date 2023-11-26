@@ -36,7 +36,7 @@ describe('Member Repository', () => {
     await repository.save(aMember);
 
     // Act
-    const memberLoaded = await repository.memberById(aMember.id);
+    const memberLoaded = await repository.entityById(aMember.id);
 
     // Assert
     assert.deepEqual(memberLoaded.id, aMember.id);
@@ -51,7 +51,7 @@ describe('Member Repository', () => {
     const nonexistingId = 'non-existing-id';
 
     // Act
-    const promise = repository.memberById(nonexistingId);
+    const promise = repository.entityById(nonexistingId);
 
     // Assert
     await assert.rejects(
@@ -68,14 +68,14 @@ describe('Member Repository', () => {
     });
     const repository = new MemberRepository(eventStoreClient);
     await repository.save(aMember);
-    const memberLoaded = await repository.memberById(aMember.id);
+    const memberLoaded = await repository.entityById(aMember.id);
     memberLoaded.updateName('Jane Doe');
 
     // Act
     await repository.save(memberLoaded);
 
     // Assert
-    const bookLoadedAfterUpdate = await repository.memberById(memberLoaded.id);
+    const bookLoadedAfterUpdate = await repository.entityById(memberLoaded.id);
     assert.deepEqual(bookLoadedAfterUpdate.id, aMember.id);
     assert.deepEqual(bookLoadedAfterUpdate.name, 'Jane Doe');
   });
