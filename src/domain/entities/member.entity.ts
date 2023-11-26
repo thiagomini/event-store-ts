@@ -11,6 +11,8 @@ import {
   MemberNameUpdatedEvent,
   type MemberSignedUpEvent,
 } from '../events/member.events';
+import { Loan } from './loan.entity';
+import { Book } from './book.entity';
 
 export type SignupMemberProps = {
   name: string;
@@ -52,6 +54,15 @@ export class Member extends Entity {
     });
 
     this.apply(nameUpdatedEvent);
+  }
+
+  public borrow(book: Book, loanDate: Date, dueDate: Date) {
+    return Loan.create({
+      bookId: book.id,
+      dueDate,
+      memberId: this.id,
+      startDate: loanDate,
+    });
   }
 
   public static signup(props: SignupMemberProps) {
