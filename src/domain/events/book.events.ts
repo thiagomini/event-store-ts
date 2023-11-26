@@ -34,6 +34,13 @@ export type BookBorrowedEvent = JSONEventType<
   BookBorrowedEventProps
 >;
 
+export type BookReturnedEventProps = BookBorrowedEventProps;
+
+export type BookReturnedEvent = JSONEventType<
+  'book-returned',
+  BookReturnedEventProps
+>;
+
 export const book = {
   bookRegistered(props: BookRegisteredEventProps) {
     return jsonEvent<BookRegisteredEvent>({
@@ -52,6 +59,13 @@ export const book = {
   bookBorrowed(props: BookBorrowedEventProps) {
     return jsonEvent<BookBorrowedEvent>({
       type: 'book-borrowed',
+      data: props,
+    });
+  },
+
+  bookReturned(props: BookReturnedEventProps) {
+    return jsonEvent<BookReturnedEvent>({
+      type: 'book-returned',
       data: props,
     });
   },

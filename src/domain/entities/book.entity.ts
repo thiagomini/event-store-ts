@@ -2,7 +2,11 @@ import { randomUUID } from 'crypto';
 import { Entity } from './entity';
 import { Change } from '../interfaces/change.interface';
 import { Events } from '../events/events';
-import { BookBorrowedEvent, BookRegisteredEvent } from '../events/book.events';
+import {
+  BookBorrowedEvent,
+  BookRegisteredEvent,
+  BookReturnedEvent,
+} from '../events/book.events';
 
 export enum BookStatus {
   Available = 'Available',
@@ -51,6 +55,13 @@ export class Book extends Entity {
           status: bookBorrowed.data.newStatus,
         });
         break;
+
+      case 'book-returned':
+        const bookReturned = change as unknown as BookReturnedEvent;
+        this.assign({
+          status: bookReturned.data.newStatus,
+        });
+        break;
       default:
         this.assign(change.data);
         break;
@@ -73,6 +84,15 @@ export class Book extends Entity {
       newStatus: BookStatus.Borrowed,
     });
     this.apply(borrowedEvent);
+  }
+
+  public return() {
+    const returnedEvent = Events.book.bookReturned({
+      id: this.id,
+      occurredOn: new Date().toISOString(),
+      newStatus: BookStatus.Available,
+    });
+    this.apply(returnedEvent);
   }
 
   public static register(props: RegisterBookProps) {

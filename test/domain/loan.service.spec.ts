@@ -8,8 +8,13 @@ import {
 } from '../../src/domain/entities/book.entity';
 import { LoanService } from '../../src/domain/services/loan.service';
 import assert from 'node:assert/strict';
+import { MemberFactory } from '../factories/member.factory';
+import { BookFactory } from '../factories/book.factory';
 
 describe('Loan Service', () => {
+  const memberFactory = new MemberFactory();
+  const bookFactory = new BookFactory();
+
   test('Lends a book to a member', () => {
     // Arrange
     const aMember = Member.signup({
@@ -45,6 +50,36 @@ describe('Loan Service', () => {
     assert.equal(aBook.status, BookStatus.Borrowed);
     assert.equal(aBook.changes.length, 2);
     assert.equal(aBook.lastChange().type, 'book-borrowed');
+  });
+
+  test('Returns a book from a member', () => {
+    // Arrange
+    const aMember = memberFactory.build();
+    const aBook = bookFactory.build();
+    const loanService = new LoanService();
+    const loan = loanService.lendBookToMember({
+      book: aBook,
+      dueDate: addDays(new Date(), 7),
+      startDate: new Date(),
+      member: aMember,
+    });
+
+    // Act
+    const endDate = new Date();
+    loanService.returnBook({
+      loan,
+      book: aBook,
+      endDate,
+    });
+
+    // Assert
+    assert.equal(loan.memberId, aMember.id);
+    assert.equal(loan.bookId, aBook.id);
+    assert.deepEqual(loan.endDate, endDate);
+
+    assert.equal(aBook.status, BookStatus.Available);
+    assert.equal(aBook.changes.length, 3);
+    assert.equal(aBook.lastChange().type, 'book-returned');
   });
 });
 
