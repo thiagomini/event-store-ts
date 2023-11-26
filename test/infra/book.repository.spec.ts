@@ -3,6 +3,7 @@ import { Book, BookGenre } from '../../src/domain/book.entity';
 import { BookRepository } from '../../src/infra/book.repository';
 import { eventStoreClient } from '../../src/infra/event-store.client';
 import assert from 'node:assert/strict';
+import { randomUUID } from 'node:crypto';
 
 describe('Book Repository', () => {
   after(async () => {
@@ -50,6 +51,18 @@ describe('Book Repository', () => {
     assert.deepEqual(bookLoaded.isbn, aBook.isbn);
     assert.deepEqual(bookLoaded.publishDate, aBook.publishDate);
     assert.deepEqual(bookLoaded.status, aBook.status);
+  });
+
+  test('throws an error when the book does not exist', async () => {
+    // Arrange
+    const repository = new BookRepository(eventStoreClient);
+    const nonexistingId = 'non-existing-id';
+
+    // Act
+    const promise = repository.bookById(nonexistingId);
+
+    // Assert
+    assert.rejects(promise, new Error('book-non-existing-id not found'));
   });
 
   test('updates an existing book', async () => {
