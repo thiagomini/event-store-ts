@@ -58,4 +58,25 @@ describe('Loan Repository', () => {
     // Assert
     await assert.rejects(promise, new Error('loan-non-existent-id not found'));
   });
+
+  test('updates a loan', async () => {
+    // Arrange
+    const aLoan = Loan.create({
+      bookId: '1',
+      memberId: '1',
+      startDate: new Date(),
+      dueDate: new Date(),
+    });
+    const repository = new LoanRepository(eventStoreClient);
+    await repository.save(aLoan);
+    const loanLoaded = await repository.entityById(aLoan.id);
+    loanLoaded.close(new Date());
+
+    // Act
+    const response = await repository.save(loanLoaded);
+
+    // Assert
+    assert.ok(response.success);
+    assert.ok(loanLoaded.endDate);
+  });
 });
