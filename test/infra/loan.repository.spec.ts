@@ -1,4 +1,4 @@
-import assert from 'node:assert';
+import assert from 'node:assert/strict';
 import { after, describe, test } from 'node:test';
 import { LoanRepository } from '../../src/infra/loan.repository';
 import { eventStoreClient } from '../../src/infra/event-store.client';
@@ -9,7 +9,7 @@ describe('Loan Repository', () => {
     await eventStoreClient.dispose();
   });
 
-  test('saves a new book', async () => {
+  test('saves a new loan', async () => {
     // Arrange
     const aLoan = Loan.create({
       bookId: '1',
@@ -24,5 +24,27 @@ describe('Loan Repository', () => {
 
     // Assert
     assert.ok(response.success);
+  });
+
+  test('returns a loan by id', async () => {
+    // Arrange
+    const aLoan = Loan.create({
+      bookId: '1',
+      memberId: '1',
+      startDate: new Date(),
+      dueDate: new Date(),
+    });
+    const repository = new LoanRepository(eventStoreClient);
+    await repository.save(aLoan);
+
+    // Act
+    const loanLoaded = await repository.entityById(aLoan.id);
+
+    // Assert
+    assert.deepEqual(loanLoaded.id, aLoan.id);
+    assert.deepEqual(loanLoaded.bookId, aLoan.bookId);
+    assert.deepEqual(loanLoaded.memberId, aLoan.memberId);
+    assert.deepEqual(loanLoaded.startDate, aLoan.startDate);
+    assert.deepEqual(loanLoaded.dueDate, aLoan.dueDate);
   });
 });
