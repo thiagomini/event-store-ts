@@ -47,4 +47,15 @@ describe('Loan Repository', () => {
     assert.deepEqual(loanLoaded.startDate, aLoan.startDate);
     assert.deepEqual(loanLoaded.dueDate, aLoan.dueDate);
   });
+
+  test('throws an error when loan is not found', async () => {
+    // Arrange
+    const repository = new LoanRepository(eventStoreClient);
+
+    // Act
+    const promise = repository.entityById('non-existent-id');
+
+    // Assert
+    await assert.rejects(promise, new Error('loan-non-existent-id not found'));
+  });
 });

@@ -4,6 +4,8 @@ import { Repository } from './entity.repository';
 import { Change } from '../domain/interfaces/change.interface';
 
 export class LoanRepository extends Repository<Loan, 'loan'> {
+  protected readonly streamBaseName = 'loan';
+
   async entityById(id: string): Promise<Loan> {
     const streamName = this.streamNameFor(id);
     const eventsStream = this.eventStoreDbClient.readStream(streamName, {
