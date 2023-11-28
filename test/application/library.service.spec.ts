@@ -49,6 +49,27 @@ describe('Library Service', () => {
     );
   });
 
+  test('Cannot lend to a non existent member', async () => {
+    // Arrange
+    const book = await bookFactory.create();
+    const startDate = new Date();
+    const dueDate = new Date();
+
+    // Act
+    const loanPromise = libraryService.lendBookToMember({
+      bookId: book.id,
+      dueDate,
+      startDate,
+      memberId: 'non-existent-id',
+    });
+
+    // Assert
+    await assert.rejects(
+      loanPromise,
+      new Error('member-non-existent-id not found'),
+    );
+  });
+
   test('Lends a book to a member', async () => {
     // Arrange
     const book = await bookFactory.create();
