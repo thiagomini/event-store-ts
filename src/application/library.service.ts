@@ -23,6 +23,7 @@ export class LibraryService {
       dueDate: command.dueDate,
     });
     await this.loanRepository.save(loan);
+    await this.bookRepository.save(book);
 
     return loan;
   }

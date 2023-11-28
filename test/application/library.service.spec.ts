@@ -8,6 +8,7 @@ import { LibraryService } from '../../src/application/library.service';
 import assert from 'node:assert/strict';
 import { LoanService } from '../../src/domain/services/loan.service';
 import { LoanRepository } from '../../src/infra/loan.repository';
+import { BookStatus } from '../../src/domain/entities/book.entity';
 
 describe('Library Service', () => {
   const bookRepository = new BookRepository(eventStoreClient);
@@ -54,5 +55,26 @@ describe('Library Service', () => {
     assert.deepEqual(loadedLoan.memberId, loan.memberId);
     assert.deepEqual(loadedLoan.startDate, loan.startDate);
     assert.deepEqual(loadedLoan.dueDate, loan.dueDate);
+  });
+
+  test('When it lends a book the book is borrowed', async () => {
+    // Arrange
+    const book = await bookFactory.create();
+    const member = await memberFactory.create();
+    const startDate = new Date();
+    const dueDate = new Date();
+
+    // Act
+    const loan = await libraryService.lendBookToMember({
+      bookId: book.id,
+      dueDate,
+      startDate,
+      memberId: member.id,
+    });
+
+    // Assert
+    const loadedBook = await bookRepository.entityById(loan.bookId);
+    assert.ok(loadedBook);
+    assert.equal(loadedBook.status, BookStatus.Borrowed);
   });
 });
