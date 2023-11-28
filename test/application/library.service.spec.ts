@@ -28,6 +28,27 @@ describe('Library Service', () => {
     await eventStoreClient.dispose();
   });
 
+  test('Cannot lend a non existent book', async () => {
+    // Arrange
+    const member = await memberFactory.create();
+    const startDate = new Date();
+    const dueDate = new Date();
+
+    // Act
+    const loanPromise = libraryService.lendBookToMember({
+      bookId: 'non-existent-id',
+      dueDate,
+      startDate,
+      memberId: member.id,
+    });
+
+    // Assert
+    await assert.rejects(
+      loanPromise,
+      new Error('book-non-existent-id not found'),
+    );
+  });
+
   test('Lends a book to a member', async () => {
     // Arrange
     const book = await bookFactory.create();
