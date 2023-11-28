@@ -7,17 +7,20 @@ import { MemberRepository } from '../../src/infra/member.repository';
 import { LibraryService } from '../../src/application/library.service';
 import assert from 'node:assert/strict';
 import { LoanService } from '../../src/domain/services/loan.service';
+import { LoanRepository } from '../../src/infra/loan.repository';
 
 describe('Library Service', () => {
   const bookRepository = new BookRepository(eventStoreClient);
   const bookFactory = new BookFactory(bookRepository);
   const memberRepository = new MemberRepository(eventStoreClient);
   const memberFactory = new MemberFactory(memberRepository);
+  const loanRepository = new LoanRepository(eventStoreClient);
   const loanService = new LoanService();
   const libraryService = new LibraryService(
     loanService,
     bookRepository,
     memberRepository,
+    loanRepository,
   );
 
   after(async () => {
@@ -43,5 +46,13 @@ describe('Library Service', () => {
     assert.equal(loan.memberId, member.id);
     assert.equal(loan.bookId, book.id);
     assert.equal(loan.endDate, undefined);
+
+    const loadedLoan = await loanRepository.entityById(loan.id);
+    assert.ok(loadedLoan);
+    assert.deepEqual(loadedLoan.id, loan.id);
+    assert.deepEqual(loadedLoan.bookId, loan.bookId);
+    assert.deepEqual(loadedLoan.memberId, loan.memberId);
+    assert.deepEqual(loadedLoan.startDate, loan.startDate);
+    assert.deepEqual(loadedLoan.dueDate, loan.dueDate);
   });
 });
