@@ -57,6 +57,31 @@ describe('Library Service', () => {
     assert.deepEqual(loadedLoan.dueDate, loan.dueDate);
   });
 
+  test('Returns a borrowed book', async () => {
+    // Arrange
+    const book = await bookFactory.create();
+    const member = await memberFactory.create();
+    const startDate = new Date();
+    const dueDate = new Date();
+    const loan = await libraryService.lendBookToMember({
+      bookId: book.id,
+      dueDate,
+      startDate,
+      memberId: member.id,
+    });
+    const endDate = new Date();
+
+    // Act
+    const loadedLoan = await libraryService.returnBook({
+      loanId: loan.id,
+      endDate,
+    });
+
+    // Assert
+    assert.deepEqual(loadedLoan.endDate, endDate);
+    assert.equal(loadedLoan.lastChange().type, 'loan-closed');
+  });
+
   test('When it lends a book the book is borrowed', async () => {
     // Arrange
     const book = await bookFactory.create();

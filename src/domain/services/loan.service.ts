@@ -9,7 +9,7 @@ export type LoanBookToMemberCommand = {
   member: Member;
 };
 
-export type ReturnBookCommand = {
+export type ReturnBookProps = {
   loan: Loan;
   book: Book;
   endDate: Date;
@@ -29,7 +29,7 @@ export class LoanService {
     return loan;
   }
 
-  public returnBook({ loan, book, endDate }: ReturnBookCommand) {
+  public returnBook({ loan, book, endDate }: ReturnBookProps) {
     if (book.isAvailable()) {
       throw new Error('Book is already available');
     }
